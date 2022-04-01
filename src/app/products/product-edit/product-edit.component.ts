@@ -19,8 +19,10 @@ export class ProductEditComponent implements OnInit {
   constructor(private productService: ProductService,
               private messageService: MessageService, private activatedRoute: ActivatedRoute) { }
   ngOnInit(): void {
-    const id = +this.activatedRoute.snapshot.paramMap.get('id');
-    this.getProduct(id);
+    this.activatedRoute.paramMap.subscribe(params => {
+        const id = +params.get('id');
+        this.getProduct(id);
+    })
   }
 
   getProduct(id: number): void {
