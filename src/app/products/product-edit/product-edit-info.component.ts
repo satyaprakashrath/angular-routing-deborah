@@ -16,5 +16,6 @@ export class ProductEditInfoComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    console.log('inside init')
   }
 }
