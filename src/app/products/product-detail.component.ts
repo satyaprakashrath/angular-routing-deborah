@@ -17,10 +17,13 @@ export class ProductDetailComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    const resolvedData : ProductResolved = this.activatedRoute.snapshot.data['resolvedData'];
-    console.log(resolvedData);
-    this.errorMessage = resolvedData.error;
-    this.onProductRetrieved(resolvedData.product);
+    this.activatedRoute.data.subscribe(data => {
+      const resolvedData : ProductResolved = data['resolvedData'];
+      console.log(resolvedData);
+      this.errorMessage = resolvedData.error;
+      this.onProductRetrieved(resolvedData.product);
+    })
+
 
   }
 
