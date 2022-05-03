@@ -30,6 +30,6 @@
     </li>
   </ul>
 </nav>
-<div class="container">
-  <router-outlet></router-outlet>
+<div class="container" [@slideInAnimation]="o1.isActivated?o1.activatedRoute:''">
+  <router-outlet #o1="outlet"></router-outlet>
 </div>
