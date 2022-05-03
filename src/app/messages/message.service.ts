@@ -15,4 +15,5 @@ export class MessageService {
     const currentDate = new Date();
     this.messages.unshift(message + ' at ' + currentDate.toLocaleString());
   }
+
 }
