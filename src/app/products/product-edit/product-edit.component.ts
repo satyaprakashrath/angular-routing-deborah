@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ObjectUnsubscribedError } from 'rxjs';
 
 import { MessageService } from '../../messages/message.service';
 
-import { Product } from '../product';
+import { Product, ProductResolved } from '../product';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -16,13 +17,25 @@ export class ProductEditComponent implements OnInit {
 
   product: Product;
 
+  private dataIsValid : {[keys: string]: boolean}={};
+
   constructor(private productService: ProductService,
               private messageService: MessageService, private activatedRoute: ActivatedRoute, private route : Router) { }
+
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe(params => {
-        const id = +params.get('id');
-        this.getProduct(id);
-    })
+    this.activatedRoute.data.subscribe(data => {
+       const resolvedData: ProductResolved = data['resolvedData'];
+       this.errorMessage = resolvedData.error;
+       this.onProductRetrieved(resolvedData.product);
+    });
+  }
+
+  isValid(path?: string) : boolean{
+    this.validate()
+    if(path){
+      return this.dataIsValid[path];
+    }
+    return (this.dataIsValid && Object.keys(this.dataIsValid).every(d => this.dataIsValid[d]===true));
   }
 
   getProduct(id: number): void {
@@ -61,7 +74,7 @@ export class ProductEditComponent implements OnInit {
   }
 
   saveProduct(): void {
-    if (true === true) {
+    if (this.isValid()) {
       if (this.product.id === 0) {
         this.productService.createProduct(this.product).subscribe({
           next: () => this.onSaveComplete(`The new ${this.product.productName} was saved`),
@@ -84,5 +97,19 @@ export class ProductEditComponent implements OnInit {
     }
 
     this.route.navigateByUrl('/products');
+  }
+
+  validate(): void {
+    console.log("product name", this.product.productName);
+    if(this.product.productName && this.product.productName.length >= 3 && this.product.productCode){
+      this.dataIsValid['info'] = true;
+    }else {
+      this.dataIsValid['info'] = false;
+    }
+    if(this.product.category && this.product.category.length >= 3){
+      this.dataIsValid['tags'] = true;
+    }else {
+      this.dataIsValid['tags'] = false;
+    }
   }
 }
