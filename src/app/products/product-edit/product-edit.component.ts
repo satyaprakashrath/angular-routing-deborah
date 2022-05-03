@@ -100,7 +100,6 @@ export class ProductEditComponent implements OnInit {
   }
 
   validate(): void {
-    console.log("product name", this.product.productName);
     if(this.product.productName && this.product.productName.length >= 3 && this.product.productCode){
       this.dataIsValid['info'] = true;
     }else {
