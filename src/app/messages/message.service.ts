@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class MessageService {
   private _messages: string[] = [];
+  isMessageDisplayed: boolean;
 
   get messages(): string[] {
     return this._messages;
