@@ -15,7 +15,22 @@ export class ProductEditComponent implements OnInit {
   pageTitle = 'Product Edit';
   errorMessage: string;
 
-  product: Product;
+  //product: Product;
+  private currentProduct;
+  private originalProduct;
+
+  get product() : Product{
+    return this.currentProduct;
+  }
+
+  set product(val: Product) {
+    this.currentProduct=val;
+    this.originalProduct = {...val};
+  }
+
+  isDirty(): boolean{
+    return JSON.stringify(this.originalProduct) !== JSON.stringify(this.currentProduct);
+  }
 
   private dataIsValid : {[keys: string]: boolean}={};
 
@@ -59,6 +74,12 @@ export class ProductEditComponent implements OnInit {
     }
   }
 
+  reset():void{
+    this.dataIsValid = null;
+    this.currentProduct = null;
+    this.originalProduct = null;
+  }
+
   deleteProduct(): void {
     if (this.product.id === 0) {
       // Don't delete, it was never saved.
@@ -95,7 +116,7 @@ export class ProductEditComponent implements OnInit {
     if (message) {
       this.messageService.addMessage(message);
     }
-
+    this.reset();
     this.route.navigateByUrl('/products');
   }
 
