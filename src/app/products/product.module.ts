@@ -15,11 +15,8 @@ import {AuthGuard} from '../user/auth.guard';
 @NgModule({
   imports: [
     SharedModule,
-    RouterModule.forChild([
-      {
-        path: 'products',
-        canActivate: [AuthGuard],
-        children: [
+    RouterModule.forChild(
+        [
           {
             path: '',
             component: ProductListComponent,
@@ -40,10 +37,7 @@ import {AuthGuard} from '../user/auth.guard';
               { path: 'tags', component: ProductEditTagsComponent },
             ],
           },
-        ],
-      },
-    ]),
-  ],
+        ])],
   declarations: [
     ProductListComponent,
     ProductDetailComponent,
